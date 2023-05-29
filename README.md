@@ -194,3 +194,6 @@ R Refresh      - Dec Refresh  L Last Page    P Prev Page
 
 OutputRowFunction`+`DeserializationSchema<RowData>` should load other Hadoop InputFormats as Table
 
+## result
+![image](https://github.com/mack007liu/flink-connector-elasticsearch-source/assets/6195700/194d1183-0d47-4efd-9c45-0002b58545d5)
+
