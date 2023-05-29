@@ -35,7 +35,7 @@ import java.util.Map;
 /**
  * @ClassName: SourceFunction
  * @Description: SourceFunction
- * @Author: lyx
+ * @Author: mack
  * @Date: 2023/5/26 11:27
  */
 public class ESSourceFunction extends RichParallelSourceFunction<RowData> implements ResultTypeQueryable<RowData> {
