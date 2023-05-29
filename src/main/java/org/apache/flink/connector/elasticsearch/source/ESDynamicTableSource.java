@@ -12,7 +12,7 @@ import org.apache.flink.table.types.DataType;
 /**
  * @ClassName: ESDynamicTableSource
  * @Description: ESDynamicTableSource
- * @Author: lyx
+ * @Author: mack
  * @Date: 2023/5/26 11:22
  */
 public class ESDynamicTableSource implements ScanTableSource {
