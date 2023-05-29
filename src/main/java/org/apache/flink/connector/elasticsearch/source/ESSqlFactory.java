@@ -20,10 +20,8 @@ import static org.apache.flink.table.factories.FactoryUtil.FORMAT_SUFFIX;
 /**
  * @ClassName: ESSqlFactory
  * @Description: ESSqlFactory
- * @Author: lyx
+ * @Author: mack
  * @Date: 2023/5/26 11:18
- * @Copyright: Fujian Linewell Software Co., Ltd. All rights reserved.
- * 注意：本内容仅限于福建南威软件股份有限公司内部传阅，禁止外泄以及用于其他的商业目的
  */
 public class ESSqlFactory implements DynamicTableSourceFactory {
     public static final ConfigOption<String> HOSTS= ConfigOptions.key("hosts").stringType().noDefaultValue();
