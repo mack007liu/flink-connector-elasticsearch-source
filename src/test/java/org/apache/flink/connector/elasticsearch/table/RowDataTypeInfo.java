@@ -1,4 +1,4 @@
-package com.ververica.flink.table.gateway.source;
+package org.apache.flink.connector.elasticsearch.table;
 
 import org.apache.flink.api.common.ExecutionConfig;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
