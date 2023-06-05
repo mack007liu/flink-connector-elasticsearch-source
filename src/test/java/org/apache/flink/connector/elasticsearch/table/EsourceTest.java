@@ -22,7 +22,7 @@ import java.nio.charset.StandardCharsets;
 public class EsourceTest {
     public static void main(String[] args) {
 
-        String hosts = "http://192.168.173.46:9200";
+        String hosts = "http://127.0.0.1:9200";
         String username = "elastic";
         String password = "elastic";
         String index = "my_index";
