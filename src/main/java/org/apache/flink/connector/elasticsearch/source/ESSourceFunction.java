@@ -95,18 +95,25 @@ public class ESSourceFunction extends RichParallelSourceFunction<RowData> implem
             logger.info("subTask:{} step3:es source function get total:{} totalPage:{}", subTaskIndex, total, totalPage);
             int from = 0;
             int size = fetch_size;
+            int count = 0;
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             String startTime = format.format(new Date());
             logger.info("subTask:{} step4:es source function execute query start from:{} size:{} ", subTaskIndex, from, size);
             Request request = new Request("GET", "/" + index + "/_search");
             for (int page = 0; page < totalPage; page++) {
-                from = (page + 1) * size;
+                if(page < totalPage){
+                    from = page * size;
+                }
+
                 if (!isRunning) {
                     logger.info("subTask:{} es source function query now is not running break while", subTaskIndex);
                     cancel();
                     break;
                 }
+                //当前子任务不是负责处理该页码的任务
                 if (page % parallelNum != subTaskIndex) {
+                    count++;
+                    logger.info("count:{}", count);
                     continue;
                 }
                 logger.info("subTask:{} es source function query current page:{} from:{} size:{}", subTaskIndex, page, from, size);
@@ -138,21 +145,23 @@ public class ESSourceFunction extends RichParallelSourceFunction<RowData> implem
                 JSONArray array = jsonObject.getJSONArray("hits");
                 List<String> searchList = array.toJavaList(String.class);
                 if (searchList.size() <= 0) {
-                    logger.info("subTask:{} es source function query result size less than 0 exit query current from:{} page:{}", subTaskIndex, from, page);
+                    logger.info("subTask:{} es source function query result size less than 0 exit query current from:{}", subTaskIndex, from);
                 }
-                searchList.stream().forEach(sourceAsString -> {
+                logger.info("searchList:{} ", searchList.size());
+                for (String sourceAsString : searchList) {
                     if (StringUtils.isBlank(sourceAsString)) {
                         logger.info("subTask:{} es source function query row is empty:{}", subTaskIndex);
                     }
                     Map resultMap = JSONObject.parseObject(sourceAsString, Map.class);
                     String source = JSONObject.toJSONString(resultMap.get("_source"));
+                    logger.info("source:{}", source);
                     try {
                         ctx.collect(deserializer.deserialize(source.getBytes()));
                     } catch (IOException e) {
                         logger.error("subTask:{} error s source function query ctx collect data:{} have error:{}", subTaskIndex, sourceAsString, ExceptionUtils.getStackTrace(e));
                         throw new RuntimeException(ExceptionUtils.getStackTrace(e));
                     }
-                });
+                }
             }
             String endTime = format.format(new Date());
             logger.info("subTask:{} step5:es source function execute query end startTime:{} endTime:{}", subTaskIndex, startTime, endTime);
